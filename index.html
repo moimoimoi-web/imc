@@ -1,0 +1,195 @@
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi bien-être & IMC</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="#" class="active" data-page="imc">Calcul IMC</a></li>
+      <li><a href="#" data-page="conseils">Conseils</a></li>
+      <li><a href="#" data-page="recettes">Recettes</a></li>
+      <li><a href="#" data-page="planning">Planning</a></li>
+      <li><a href="#" data-page="musique">Musique</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="imc" class="page active">
+      <h1>Calculez votre IMC</h1>
+      <div class="imc-calc">
+        <div class="input-group">
+          <label for="poids">Poids (kg)</label>
+          <input type="number" id="poids" step="0.1" min="20" max="300" placeholder="Ex: 70.5">
+        </div>
+        <div class="input-group">
+          <label for="taille">Taille (m)</label>
+          <input type="number" id="taille" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.75">
+        </div>
+        <button onclick="calculerIMC()">Calculer</button>
+      </div>
+
+      <div id="resultat-imc" class="hidden">
+        <h2>Votre IMC: <span id="imc-value"></span></h2>
+        <p>Statut: <span id="imc-status"></span></p>
+      </div>
+
+      <div class="graph-container">
+        <canvas id="imc-graph"></canvas>
+      </div>
+    </section>
+
+    <section id="conseils" class="page">
+      <h1>Conseils personnalisés</h1>
+      <div class="conseils-container">
+        <div class="conseil-card" id="insuffisance">
+          <h2>IMC < 18.5 - Insuffisance pondérale</h2>
+          <ul>
+            <li>Augmentez progressivement vos apports caloriques</li>
+            <li>Privilégiez les protéines maigres</li>
+            <li>Faites des repas plus fréquents</li>
+            <li>Combinez avec des exercices de musculation légers</li>
+          </ul>
+        </div>
+
+        <div class="conseil-card" id="normal">
+          <h2>IMC 18.5-24.9 - Poids normal</h2>
+          <ul>
+            <li>Maintenez une alimentation équilibrée</li>
+            <li>Pratiquez une activité physique régulière</li>
+            <li>Gardez un bon rythme de sommeil</li>
+            <li>Restez hydraté</li>
+          </ul>
+        </div>
+
+        <div class="conseil-card" id="surpoids">
+          <h2>IMC 25-29.9 - Surpoids</h2>
+          <ul>
+            <li>Réduisez les portions progressivement</li>
+            <li>Privilégiez les aliments peu caloriques</li>
+            <li>Augmentez l'activité physique doucement</li>
+            <li>Évitez les grignotages</li>
+          </ul>
+        </div>
+
+        <div class="conseil-card" id="obesite">
+          <h2>IMC > 30 - Obésité</h2>
+          <ul>
+            <li>Consultez un professionnel de santé</li>
+            <li>Commencez par la marche quotidienne</li>
+            <li>Éliminez les boissons sucrées</li>
+            <li>Planifiez vos repas à l'avance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="recettes" class="page">
+      <h1>Recettes adaptées</h1>
+      <div class="recettes-filter">
+        <select id="filter-type">
+          <option value="all">Tous les types</option>
+          <option value="maigrir">Pour maigrir</option>
+          <option value="maintien">Pour maintenir</option>
+          <option value="masse">Pour prendre de la masse</option>
+        </select>
+      </div>
+      <div class="recettes-grid" id="recettes-container">
+        <!-- Rempli dynamiquement par JavaScript -->
+      </div>
+    </section>
+
+    <section id="planning" class="page">
+      <h1>Planning de la semaine</h1>
+      <div class="planning-container">
+        <div class="planning-controls">
+          <button onclick="genererPlanning()">Générer un nouveau planning</button>
+        </div>
+        <div class="planning-grid" id="planning-grid">
+          <!-- Rempli dynamiquement par JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <section id="musique" class="page">
+      <h1>Playlist motivante</h1>
+      <div class="music-player">
+        <div id="player"></div>
+      </div>
+      <div class="playlist-container">
+        <div class="playlist-category">
+          <h2>Motivation & Sport</h2>
+          <div class="playlist">
+            <div class="track" data-video-id="btPJPFnesV4">
+              <span>Eye of the Tiger - Survivor</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="gG_dA32oH44">
+              <span>Stronger - Kanye West</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="ioE_O7Lm0I4">
+              <span>Gonna Fly Now - Bill Conti</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="-tJYN-eG1zk">
+              <span>We Will Rock You - Queen</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="playlist-category">
+          <h2>Rap Moderne</h2>
+          <div class="playlist">
+            <div class="track" data-video-id="6SasSMzZeao">
+              <span>DIE - Gazo</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="K_QeXnUk3RU">
+              <span>Vendredi soir - JKSN</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="NLZRYQMLDW4">
+              <span>DNA - Kendrick Lamar</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="H4RELGc9su8">
+              <span>HUMBLE - Kendrick Lamar</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="playlist-category">
+          <h2>Classiques</h2>
+          <div class="playlist">
+            <div class="track" data-video-id="KXw8CRapg7k">
+              <span>We Will Rock You - Queen</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="NNiTxUEnmKI">
+              <span>The Final Countdown - Europe</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="SwYN7mTi6HM">
+              <span>Jump - Van Halen</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+            <div class="track" data-video-id="qeMFqkcPYcg">
+              <span>Sweet Dreams - Eurythmics</span>
+              <button class="play-btn">▶️ Écouter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="app.js"></script>
+</body>
+</html>
